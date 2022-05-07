@@ -45,8 +45,9 @@ public class BurgerTest {
     @Test
     public void removeIngredientTest() {
         burger.addIngredient(ingredient);
+        Ingredient burgerFirstIngredient = burger.ingredients.get(0);
         burger.removeIngredient(0);
-        assertFalse(burger.ingredients.contains(ingredient));
+        assertFalse(burger.ingredients.contains(burgerFirstIngredient));
     }
 
     @Test
@@ -60,7 +61,7 @@ public class BurgerTest {
     }
 
     @Test
-    public void getPriceTest() {
+    public void burgerGetPriceTest() {
 
         float expected =
                 (database.availableBuns().get(0).getPrice() * 2 +
@@ -72,7 +73,7 @@ public class BurgerTest {
     }
 
     @Test
-    public void getReceipt() {
+    public void burgerGetReceipt() {
         String actual = burger.getReceipt();
         String expected = "(==== black bun ====)\n" +
                 "= sauce hot sauce =\n" +
