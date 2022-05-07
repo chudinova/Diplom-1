@@ -23,7 +23,6 @@ public class BurgerTest {
     }
 
 
-
     @Mock
     Bun bun;
 
