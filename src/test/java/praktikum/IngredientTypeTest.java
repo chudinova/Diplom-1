@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-//если честно, совсем не поняла, что и как здесь проверять... Может направите?
-
 public class IngredientTypeTest {
 
     @Test
@@ -22,7 +20,4 @@ public class IngredientTypeTest {
         IngredientType expected = IngredientType.FILLING;
         assertEquals(expected, actual);
     }
-
-
-
 }
