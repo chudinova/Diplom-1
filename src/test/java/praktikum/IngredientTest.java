@@ -1,32 +1,36 @@
 package praktikum;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class IngredientTest {
-    Database database = new Database();
-    Ingredient ingredient = new Ingredient(database.availableIngredients().get(0).getType(),
-            database.availableIngredients().get(0).getName(), database.availableIngredients().get(0).getPrice());
+
+    private final static IngredientType TYPE = IngredientType.FILLING;
+    private final static String NAME = "cutlet";
+    private final static float PRICE = 100f;
+
+
+    Ingredient ingredient = new Ingredient(TYPE, NAME, PRICE);
 
     @Test
-    public void ingridientGetPriceTest() {
+    public void ingredientGetPriceTest() {
         float actual = ingredient.getPrice();
-        float expected = database.availableIngredients().get(0).getPrice();
-        assertEquals(expected, actual, 0.0);
+        assertEquals(0, Float.compare(PRICE, actual));
     }
 
     @Test
-    public void ingridientGetNameTest() {
+    public void ingredientGetNameTest() {
         String actual = ingredient.getName();
-        String expected = database.availableIngredients().get(0).getName();
-        assertEquals(expected, actual);
+        assertEquals(NAME, actual);
     }
 
     @Test
-    public void ingridientGetTypeTest() {
+    public void ingredientGetTypeTest() {
         IngredientType actual = ingredient.getType();
-        IngredientType expected = database.availableIngredients().get(0).getType();
-        assertEquals(expected, actual);
+        assertEquals(TYPE, actual);
     }
 }
