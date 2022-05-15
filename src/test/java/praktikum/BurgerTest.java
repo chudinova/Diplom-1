@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -13,23 +14,35 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
     Burger burger = new Burger();
-    Database database = new Database();
-
-    @Before
-    public void setUp() {
-        burger.ingredients = new ArrayList<>();
-        burger.bun = database.availableBuns().get(0);
-        burger.addIngredient(database.availableIngredients().get(0));
-        burger.addIngredient(database.availableIngredients().get(1));
-        burger.addIngredient(database.availableIngredients().get(2));
-    }
-
 
     @Mock
     Bun bun;
 
     @Mock
     Ingredient ingredient;
+
+    @Mock
+    Database database;
+
+ /*   @Before
+    public void setUp() {
+        Mockito.when(database.availableBuns()).thenReturn(new ArrayList<Bun>(new Bun("black bun", 100), new Bun(
+                "white bun", 200), new Bun("red bun", 300)));
+        Mockito.when(database.availableIngredients().get(0)).thenReturn(new Ingredient(IngredientType.SAUCE, "hot " +
+                "sauce", 100));
+        Mockito.when(database.availableIngredients().get(1)).thenReturn(new Ingredient(IngredientType.SAUCE, "sour " +
+                "cream", 200));
+        Mockito.when(database.availableIngredients().get(2)).thenReturn(new Ingredient(IngredientType.FILLING,
+                "cutlet", 100));
+
+        burger.ingredients = new ArrayList<>();
+        burger.bun = database.availableBuns().get(0);
+        burger.addIngredient(database.availableIngredients().get(0));
+        burger.addIngredient(database.availableIngredients().get(1));
+        burger.addIngredient(database.availableIngredients().get(2));
+    }*/
+
+
 
     @Test
     public void setBunsTest() {
@@ -64,25 +77,34 @@ public class BurgerTest {
     @Test
     public void burgerGetPriceTest() {
 
-        float expected =
-                (database.availableBuns().get(0).getPrice() * 2 +
-                        database.availableIngredients().get(0).getPrice() +
-                        database.availableIngredients().get(1).getPrice() +
-                        database.availableIngredients().get(2).getPrice());
+        Mockito.when(bun.getPrice()).thenReturn(5.5f);
+        Mockito.when(ingredient.getPrice()).thenReturn(1.1f);
+
+        burger.setBuns(bun);
+        burger.addIngredient(ingredient);
+
         float actual = burger.getPrice();
-        assertEquals(expected, actual, 0.0);
+
+        assertEquals(0, Float.compare(12.1f, actual));
     }
 
     @Test
     public void burgerGetReceipt() {
-        String actual = burger.getReceipt();
-        String expected = "(==== black bun ====)\n" +
-                "= sauce hot sauce =\n" +
-                "= sauce sour cream =\n" +
-                "= sauce chili sauce =\n" +
-                "(==== black bun ====)\n" +
+        Ingredient ingredient = new Ingredient(IngredientType.FILLING, "cutlet", 100);
+
+        Mockito.when(bun.getName()).thenReturn("white bun");
+
+        burger.setBuns(bun);
+        burger.addIngredient(ingredient);
+
+        String expected = "(==== white bun ====)\n" +
+                "= filling cutlet =\n" +
+                "(==== white bun ====)\n" +
                 "\n" +
-                "Price: 800,000000\n";
+                "Price: 100,000000\n";
+
+        String actual = burger.getReceipt();
+
         assertEquals(expected, actual);
     }
 }
